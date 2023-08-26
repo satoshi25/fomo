@@ -13,9 +13,15 @@ class ArticleRepository:
         self.session = session
 
     def get_rank_articles(self, publish_date: date) -> List[Article] | None:
-
         articles: List[Article] | None = list(
             self.session.scalars(select(Article).where(Article.publish_date == publish_date))
         )
+        return articles
 
+    def get_rank_journal_articles(self, publish_data: date, journal: str) -> List[Article] | None:
+        articles: List[Article] | None = list(
+            self.session.scalars(
+                select(Article).where(Article.publish_date == publish_data).where(Article.journal == journal)
+            )
+        )
         return articles
