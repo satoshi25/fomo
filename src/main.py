@@ -4,6 +4,7 @@ from datetime import date
 
 from schema.response import ArticleListRankSchema, ArticleSchema
 from database.repository import ArticleRepository
+from database.orm import Article
 
 app = FastAPI()
 
@@ -20,7 +21,7 @@ def get_rank_articles_handler(
 ) -> ArticleListRankSchema:
 
     publish_date: date = date.fromisoformat(publish_date)
-    articles: List[ArticleSchema] | None = article_repo.get_rank_articles(publish_date=publish_date)
+    articles: List[Article] | None = article_repo.get_rank_articles(publish_date=publish_date)
     if not articles:
         raise HTTPException(status_code=404, detail="Articles Not Found")
 
@@ -42,8 +43,8 @@ def get_rank_journal_articles_handler(
 ) -> ArticleListRankSchema:
 
     publish_date: date = date.fromisoformat(publish_date)
-    articles: List[ArticleSchema] | None = article_repo.get_rank_journal_articles(
-        publish_data=publish_date, journal=journal
+    articles: List[Article] | None = article_repo.get_rank_journal_articles(
+        publish_date=publish_date, journal=journal
     )
     if not articles:
         raise HTTPException(status_code=404, detail="Articles Not Found")

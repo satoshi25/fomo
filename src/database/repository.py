@@ -1,6 +1,7 @@
 from fastapi import Depends
-from typing import List
-from sqlalchemy import select
+from typing import List, Sequence
+from sqlalchemy import select, func, desc
+from sqlalchemy.engine.row import Row
 from sqlalchemy.orm import Session
 from datetime import date
 
@@ -18,10 +19,10 @@ class ArticleRepository:
         )
         return articles
 
-    def get_rank_journal_articles(self, publish_data: date, journal: str) -> List[Article] | None:
+    def get_rank_journal_articles(self, publish_date: date, journal: str) -> List[Article] | None:
         articles: List[Article] | None = list(
             self.session.scalars(
-                select(Article).where(Article.publish_date == publish_data).where(Article.journal == journal)
+                select(Article).where(Article.publish_date == publish_date).where(Article.journal == journal)
             )
         )
         return articles
