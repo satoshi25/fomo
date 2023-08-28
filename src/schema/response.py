@@ -6,7 +6,7 @@ from datetime import date
 class ArticleSchema(BaseModel):
     id: int
     title: str
-    content: str
+    image: str
     journal: str
     url: str
     view: int

@@ -52,7 +52,7 @@ class ArticleRepository:
                 Article(
                     id=article[0],
                     title=article[1],
-                    content=article[2],
+                    image=article[2],
                     journal=article[3],
                     url=article[4],
                     view=article[5],
