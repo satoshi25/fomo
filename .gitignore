@@ -27,3 +27,6 @@ venv.bak/
 
 # PyCharm
 .idea/
+
+# Celery
+celerybeat-schedule.db
