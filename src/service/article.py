@@ -42,13 +42,13 @@ class ScrapArticle:
                         if not view_data:
                             continue
                         else:
-                            data: dict = {"title": "", "img": "", "journal": journal, "url": "", "view": 0,
+                            data: dict = {"title": "", "image": "", "journal": journal, "url": "", "view": 0,
                                           "publish_date": today}
                             image = article.find("div", class_="list_img")
                             if not image:
-                                data["img"] = self.no_image
+                                data["image"] = self.no_image
                             else:
-                                data["img"] = image.find("img")["src"]
+                                data["image"] = image.find("img")["src"]
                             data["url"] = article["href"]
                             data["title"] = article.find("strong", class_="list_title").text
                             view_data = "".join(num.findall(view_data.text))
