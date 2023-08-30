@@ -2,6 +2,7 @@ from typing import List
 from datetime import date
 from sqlalchemy.orm import Session
 
+from celery import chain
 from celery_config import celery_task
 from service.article import ScrapArticle
 from schema.scrap import ArticleModel
@@ -42,3 +43,9 @@ def save_article_db_task(data: list[dict]) -> List[dict]:
         session.close()
 
     return data
+
+
+@celery_task.task
+def scrap_and_save_pipeline_task():
+    pipeline = chain(scrap_article_task.s(), save_article_db_task.s())
+    pipeline.apply_async()

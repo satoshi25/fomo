@@ -14,7 +14,7 @@ celery_task.conf.timezone = "Asia/Seoul"
 
 celery_task.conf.beat_schedule = {
     "run-scrap-every-day": {
-        "task": "service.celery_worker.scrap_article_task",
+        "task": "service.celery_worker.scrap_and_save_pipeline_task",
         "schedule": crontab(hour="23", minute="0"),
     }
 }
