@@ -62,3 +62,19 @@ class ArticleRepository:
             ]
 
         return articles
+
+    @staticmethod
+    def save_articles(session: Session, articles: List[dict]) -> None:
+        data = []
+        for article in articles:
+            row = {
+                "title": article.get("title"),
+                "image": article.get("image"),
+                "journal": article.get("journal"),
+                "url": article.get("url"),
+                "view": article.get("view"),
+                "publish_date": article.get("publish_date")
+            }
+            data.append(row)
+        session.bulk_insert_mappings(Article, data)
+        session.commit()

@@ -1,6 +1,9 @@
 from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy.orm import declarative_base
 
+from schema.scrap import ArticleModel
+
+
 Base = declarative_base()
 
 
@@ -17,3 +20,14 @@ class Article(Base):
     def __repr__(self):
         return (f"Article(id={self.id}, title={self.title}, image={self.image}, "
                 f"journal={self.journal}, url={self.url}, publish_date={self.publish_date})")
+
+    @classmethod
+    def create_article(cls, article: dict | ArticleModel) -> "Article":
+        return cls(
+            title=article.get("title"),
+            image=article.get("image"),
+            journal=article.get("journal"),
+            url=article.get("url"),
+            view=article.get("view"),
+            publish_date=article.get("publish_date")
+        )

@@ -1,9 +1,12 @@
 from typing import List
 from datetime import date
+from sqlalchemy.orm import Session
 
 from celery_config import celery_task
 from service.article import ScrapArticle
 from schema.scrap import ArticleModel
+from database.repository import ArticleRepository
+from database.connection import SessionFactory
 
 
 @celery_task.task
@@ -24,5 +27,18 @@ def scrap_article_task() -> List[dict]:
                 publish_date=publish_date
             )
             data.append(converted_article.dict())
+
+    return data
+
+
+@celery_task.task
+def save_article_db_task(data: list[dict]) -> List[dict]:
+    session: Session = SessionFactory()
+    repo = ArticleRepository()
+
+    try:
+        repo.save_articles(session=session, articles=data)
+    finally:
+        session.close()
 
     return data
