@@ -113,7 +113,7 @@ def create_user_handler(
 
     user: User | None = user_repo.get_user_by_username(username=request.username)
     if user:
-        raise HTTPException(status_code=400, detail="User already exist")
+        raise HTTPException(status_code=400, detail="User Already Exist")
 
     hashed_password: str = user_service.hash_password(password=request.password)
 
@@ -121,3 +121,23 @@ def create_user_handler(
     user: User = user_repo.save_user(user=user)
 
     return UserSchema.from_orm(user)
+
+
+@app.post("/user/login", status_code=200)
+def login_user_handler(
+    request: UserRequest,
+    user_service: UserService = Depends(),
+    user_repo: UserRepository = Depends(),
+):
+
+    user: User | None = user_repo.get_user_by_username(username=request.username)
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User Not Found")
+
+    verified: bool = user_service.verify_password(password=request.password, hashed_password=user.password)
+
+    if not verified:
+        raise HTTPException(status_code=401, detail="Not Authorized")
+
+    return
