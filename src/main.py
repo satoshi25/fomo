@@ -6,6 +6,7 @@ from schema.request import UserRequest
 from schema.response import ArticleListRankSchema, ArticleSchema, UserSchema
 from database.repository import ArticleRepository, UserRepository
 from database.orm import Article, User
+from service.user import UserService
 
 app = FastAPI()
 
@@ -106,6 +107,7 @@ def get_search_articles_handler(
 @app.post("/user/signup", status_code=201)
 def create_user_handler(
     request: UserRequest,
+    user_service: UserService = Depends(),
     user_repo: UserRepository = Depends()
 ) -> UserSchema:
 
@@ -113,7 +115,9 @@ def create_user_handler(
     if user:
         raise HTTPException(status_code=400, detail="User already exist")
 
-    user: User = User(username=request.username, password=request.password)
+    hashed_password: str = user_service.hash_password(password=request.password)
+
+    user: User = User(username=request.username, password=hashed_password, role=1)
     user: User = user_repo.save_user(user=user)
 
     return UserSchema.from_orm(user)

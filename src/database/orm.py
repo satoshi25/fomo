@@ -44,9 +44,9 @@ class User(Base):
         return f"Article(id={self.id}, username={self.username}, role={self.role}"
 
     @classmethod
-    def create_user(cls, username: str, password: str) -> 'User':
+    def create_user(cls, username: str, password: str, role: int) -> 'User':
         return cls(
             username=username,
             password=password,
-            role=1
+            role=role
         )
