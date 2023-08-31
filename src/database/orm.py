@@ -31,3 +31,15 @@ class Article(Base):
             view=article.get("view"),
             publish_date=article.get("publish_date")
         )
+
+
+class User(Base):
+    __tablename__ = "user"
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(Integer, nullable=False)
+    password = Column(String(256), nullable=False)
+    role = Column(Integer, nullable=False)
+
+    def __repr__(self):
+        return f"Article(id={self.id}, username={self.username}, role={self.role}"
+    

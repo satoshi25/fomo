@@ -18,3 +18,8 @@ class ArticleSchema(BaseModel):
 
 class ArticleListRankSchema(BaseModel):
     articles: List[ArticleSchema]
+
+
+class UserSchema(BaseModel):
+    id: int
+    username: str
