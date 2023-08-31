@@ -38,15 +38,13 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(Integer, nullable=False)
     password = Column(String(256), nullable=False)
-    role = Column(Integer, nullable=False)
 
     def __repr__(self):
-        return f"Article(id={self.id}, username={self.username}, role={self.role}"
+        return f"Article(id={self.id}, username={self.username}"
 
     @classmethod
-    def create_user(cls, username: str, password: str, role: int) -> 'User':
+    def create_user(cls, username: str, password: str) -> 'User':
         return cls(
             username=username,
-            password=password,
-            role=role
+            password=password
         )

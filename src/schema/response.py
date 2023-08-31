@@ -26,3 +26,7 @@ class UserSchema(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class JWTSchema(BaseModel):
+    access_token: str

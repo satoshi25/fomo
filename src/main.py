@@ -3,7 +3,7 @@ from typing import List
 from datetime import date
 
 from schema.request import UserRequest
-from schema.response import ArticleListRankSchema, ArticleSchema, UserSchema
+from schema.response import ArticleListRankSchema, ArticleSchema, UserSchema, JWTSchema
 from database.repository import ArticleRepository, UserRepository
 from database.orm import Article, User
 from service.user import UserService
@@ -117,7 +117,7 @@ def create_user_handler(
 
     hashed_password: str = user_service.hash_password(password=request.password)
 
-    user: User = User(username=request.username, password=hashed_password, role=1)
+    user: User = User(username=request.username, password=hashed_password)
     user: User = user_repo.save_user(user=user)
 
     return UserSchema.from_orm(user)
@@ -140,4 +140,6 @@ def login_user_handler(
     if not verified:
         raise HTTPException(status_code=401, detail="Not Authorized")
 
-    return
+    access_token: str = user_service.create_jwt(username=user.username)
+
+    return JWTSchema(access_token=access_token)
