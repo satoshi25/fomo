@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from datetime import date
 
 from database.connection import get_db
-from database.orm import Article
+from database.orm import Article, User
 
 
 class ArticleRepository:
@@ -98,3 +98,19 @@ class ArticleRepository:
             data.append(row)
         session.bulk_insert_mappings(Article, data)
         session.commit()
+
+
+class UserRepository:
+
+    def __init__(self, session: Session = Depends(get_db)):
+        self.session = session
+
+    def get_user_by_username(self, username: str) -> User | None:
+        user: User | None = self.session.scalar(select(User).where(User.username == username))
+        return user
+
+    def save_user(self, user: User) -> User:
+        self.session.add(instance=user)
+        self.session.commit()
+        self.session.refresh(instance=user)
+        return user

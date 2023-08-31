@@ -42,4 +42,11 @@ class User(Base):
 
     def __repr__(self):
         return f"Article(id={self.id}, username={self.username}, role={self.role}"
-    
+
+    @classmethod
+    def create_user(cls, username: str, password: str) -> 'User':
+        return cls(
+            username=username,
+            password=password,
+            role=1
+        )

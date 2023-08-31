@@ -2,9 +2,10 @@ from fastapi import FastAPI, Depends, HTTPException
 from typing import List
 from datetime import date
 
-from schema.response import ArticleListRankSchema, ArticleSchema
-from database.repository import ArticleRepository
-from database.orm import Article
+from schema.request import UserRequest
+from schema.response import ArticleListRankSchema, ArticleSchema, UserSchema
+from database.repository import ArticleRepository, UserRepository
+from database.orm import Article, User
 
 app = FastAPI()
 
@@ -100,3 +101,19 @@ def get_search_articles_handler(
             ArticleSchema.from_orm(article) for article in articles
         ]
     )
+
+
+@app.post("/user/signup", status_code=201)
+def create_user_handler(
+    request: UserRequest,
+    user_repo: UserRepository = Depends()
+) -> UserSchema:
+
+    user: User | None = user_repo.get_user_by_username(username=request.username)
+    if user:
+        raise HTTPException(status_code=400, detail="User already exist")
+
+    user: User = User(username=request.username, password=request.password)
+    user: User = user_repo.save_user(user=user)
+
+    return UserSchema.from_orm(user)
