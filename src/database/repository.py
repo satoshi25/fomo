@@ -13,6 +13,26 @@ class ArticleRepository:
     def __init__(self, session: Session = Depends(get_db)):
         self.session = session
 
+    def get_search_articles(
+        self,
+        title: str | None = None,
+        journal: str | None = None,
+        publish_date: date | None = None
+    ) -> List[Article] | List:
+        query_list = []
+        if title:
+            query_list.append(Article.title.like(f"%{title}%"))
+        if journal:
+            query_list.append(Article.journal.like(f"%{journal}%"))
+        if publish_date:
+            query_list.append(Article.publish_date == publish_date)
+
+        if not query_list:
+            return []
+
+        articles = self.session.query(Article).filter(*query_list).all()
+        return articles
+
     def get_rank_articles(self, publish_date: date) -> List[Article] | None:
         articles: List[Article] | None = list(
             self.session.scalars(select(Article).where(Article.publish_date == publish_date))
