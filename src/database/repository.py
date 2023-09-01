@@ -1,6 +1,6 @@
 from fastapi import Depends
 from typing import List, Sequence
-from sqlalchemy import select, func, desc
+from sqlalchemy import select, func, desc, delete
 from sqlalchemy.engine.row import Row
 from sqlalchemy.orm import Session
 from datetime import date
@@ -98,6 +98,10 @@ class ArticleRepository:
         self.session.commit()
         self.session.refresh(instance=article)
         return article
+
+    def delete_article(self, article_id: int) -> None:
+        self.session.execute(delete(Article).where(Article.id == article_id))
+        self.session.commit()
 
     @staticmethod
     def save_articles(session: Session, articles: List[dict]) -> None:

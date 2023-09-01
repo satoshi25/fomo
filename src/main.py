@@ -169,6 +169,26 @@ def update_article_handler(
     return ArticleSchema.from_orm(article)
 
 
+@app.delete("/article/{article_id}", status_code=204)
+def delete_article_handler(
+    article_id: int,
+    access_token: str = Depends(get_access_token),
+    user_service: UserService = Depends(),
+    article_repo: ArticleRepository = Depends(),
+) -> None:
+
+    validate: str | None = user_service.verify_token(access_token=access_token)
+    if not validate:
+        raise HTTPException(status_code=401, detail="Token Has Expired")
+
+    article: Article | None = article_repo.get_article_by_id(article_id=article_id)
+
+    if not article:
+        raise HTTPException(status_code=404, detail="Article Not Found")
+
+    article_repo.delete_article(article_id=article_id)
+
+
 @app.post("/user/signup", status_code=201)
 def create_user_handler(
     request: UserRequest,
