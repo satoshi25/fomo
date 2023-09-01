@@ -1,7 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "mysql+pymysql://root:fomo@127.0.0.1:3306/fomo"
+from src.config import MYSQL_URL
+
+DATABASE_URL = MYSQL_URL
 
 engine = create_engine(DATABASE_URL, echo=True)
 SessionFactory = sessionmaker(autocommit=False, autoflush=False, bind=engine)

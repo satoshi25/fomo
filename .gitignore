@@ -24,6 +24,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+secrets.json
 
 # PyCharm
 .idea/

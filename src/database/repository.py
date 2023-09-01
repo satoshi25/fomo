@@ -5,8 +5,8 @@ from sqlalchemy.engine.row import Row
 from sqlalchemy.orm import Session
 from datetime import date
 
-from database.connection import get_db
-from database.orm import Article, User
+from src.database.connection import get_db
+from src.database.orm import Article, User
 
 
 class ArticleRepository:

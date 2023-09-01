@@ -1,13 +1,13 @@
 from typing import List
 from datetime import date
 from sqlalchemy.orm import Session
-
 from celery import chain
-from celery_config import celery_task
-from service.article import ScrapArticle
-from schema.scrap import ArticleModel
-from database.repository import ArticleRepository
-from database.connection import SessionFactory
+
+from src.celery_config import celery_task
+from src.service.article import ScrapArticle
+from src.schema.scrap import ArticleModel
+from src.database.repository import ArticleRepository
+from src.database.connection import SessionFactory
 
 
 @celery_task.task

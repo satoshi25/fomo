@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy.orm import declarative_base
 
-from schema.scrap import ArticleModel
+from src.schema.scrap import ArticleModel
 
 
 Base = declarative_base()

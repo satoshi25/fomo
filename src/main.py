@@ -2,12 +2,12 @@ from fastapi import FastAPI, Depends, HTTPException, Body
 from typing import List
 from datetime import date
 
-from schema.request import UserRequest, ArticleRequest
-from schema.response import ArticleListRankSchema, ArticleSchema, UserSchema, JWTSchema
-from database.repository import ArticleRepository, UserRepository
-from database.orm import Article, User
-from security import get_access_token
-from service.user import UserService
+from src.schema.request import UserRequest, ArticleRequest
+from src.schema.response import ArticleListRankSchema, ArticleSchema, UserSchema, JWTSchema
+from src.database.repository import ArticleRepository, UserRepository
+from src.database.orm import Article, User
+from src.security import get_access_token
+from src.service.user import UserService
 
 app = FastAPI()
 
