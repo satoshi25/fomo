@@ -17,10 +17,10 @@ class UserService:
         hashed_password: bytes = hashed_password.encode(self.encode)
         return bcrypt.checkpw(request_password, hashed_password)
 
-    def create_jwt(self, username: str) -> str:
+    def create_jwt(self, username: str, role: int) -> str:
         return jwt.encode(
             {
-                "sub": username,
+                "sub": f"{username},{role}",
                 "exp": datetime.now() + timedelta(days=7)
             },
             key=self.secret_key,

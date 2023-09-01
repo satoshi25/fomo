@@ -116,6 +116,8 @@ def create_article_handler(
     validate: str | None = user_service.verify_token(access_token=access_token)
     if not validate:
         raise HTTPException(status_code=401, detail="Token Has Expired")
+    if validate.split(",")[1] != "1":
+        raise HTTPException(status_code=401, detail="Not Authorized")
 
     publish_date: date = date.fromisoformat(request.publish_date)
     articles: List[Article] = article_repo.get_search_articles(
@@ -153,6 +155,8 @@ def update_article_handler(
     validate: str | None = user_service.verify_token(access_token=access_token)
     if not validate:
         raise HTTPException(status_code=401, detail="Token Has Expired")
+    if validate.split(",")[1] != "1":
+        raise HTTPException(status_code=401, detail="Not Authorized")
 
     article: Article | None = article_repo.get_article_by_id(article_id=article_id)
 
@@ -180,6 +184,8 @@ def delete_article_handler(
     validate: str | None = user_service.verify_token(access_token=access_token)
     if not validate:
         raise HTTPException(status_code=401, detail="Token Has Expired")
+    if validate.split(",")[1] != "1":
+        raise HTTPException(status_code=401, detail="Not Authorized")
 
     article: Article | None = article_repo.get_article_by_id(article_id=article_id)
 
@@ -202,7 +208,7 @@ def create_user_handler(
 
     hashed_password: str = user_service.hash_password(password=request.password)
 
-    user: User = User(username=request.username, password=hashed_password)
+    user: User = User(username=request.username, password=hashed_password, role=0)
     user: User = user_repo.save_user(user=user)
 
     return UserSchema.from_orm(user)
@@ -225,6 +231,6 @@ def login_user_handler(
     if not verified:
         raise HTTPException(status_code=401, detail="Not Authorized")
 
-    access_token: str = user_service.create_jwt(username=user.username)
+    access_token: str = user_service.create_jwt(username=user.username, role=user.role)
 
     return JWTSchema(access_token=access_token)
