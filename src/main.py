@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Body
 from typing import List
 from datetime import date
 
@@ -136,6 +136,35 @@ def create_article_handler(
             publish_date=publish_date
         )
     )
+
+    return ArticleSchema.from_orm(article)
+
+
+@app.patch("/article/{article_id}", status_code=200)
+def update_article_handler(
+    article_id: int,
+    access_token: str = Depends(get_access_token),
+    image: str = Body(..., embed=True),
+    url: str = Body(..., embed=True),
+    user_service: UserService = Depends(),
+    article_repo: ArticleRepository = Depends(),
+) -> ArticleSchema:
+
+    validate: str | None = user_service.verify_token(access_token=access_token)
+    if not validate:
+        raise HTTPException(status_code=401, detail="Token Has Expired")
+
+    article: Article | None = article_repo.get_article_by_id(article_id=article_id)
+
+    if not article:
+        raise HTTPException(status_code=404, detail="Article Not Found")
+
+    if image:
+        article.update_image(image=image)
+    if url:
+        article.update_url(url=url)
+
+    article: Article = article_repo.update_article(article=article)
 
     return ArticleSchema.from_orm(article)
 

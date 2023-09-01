@@ -83,7 +83,17 @@ class ArticleRepository:
 
         return articles
 
+    def get_article_by_id(self, article_id: int) -> Article | None:
+        article: Article | None = self.session.scalar(select(Article).where(Article.id == article_id))
+        return article
+
     def save_article(self, article: Article) -> Article:
+        self.session.add(instance=article)
+        self.session.commit()
+        self.session.refresh(instance=article)
+        return article
+
+    def update_article(self, article: Article) -> Article:
         self.session.add(instance=article)
         self.session.commit()
         self.session.refresh(instance=article)

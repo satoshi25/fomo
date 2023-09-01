@@ -21,6 +21,12 @@ class Article(Base):
         return (f"Article(id={self.id}, title={self.title}, image={self.image}, "
                 f"journal={self.journal}, url={self.url}, publish_date={self.publish_date})")
 
+    def update_image(self, image: str):
+        self.image = image
+
+    def update_url(self, url: str):
+        self.url = url
+
     @classmethod
     def create_article(cls, article: dict | ArticleModel) -> "Article":
         return cls(
