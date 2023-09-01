@@ -17,12 +17,20 @@ class UserService:
         hashed_password: bytes = hashed_password.encode(self.encode)
         return bcrypt.checkpw(request_password, hashed_password)
 
-    def create_jwt(self, username: str):
+    def create_jwt(self, username: str) -> str:
         return jwt.encode(
             {
                 "sub": username,
-                "exp": datetime.now() + timedelta(days=3)
+                "exp": datetime.now() + timedelta(days=7)
             },
-            self.secret_key,
+            key=self.secret_key,
             algorithm=self.algorithm,
         )
+
+    def verify_token(self, access_token: str) -> str | None:
+        try:
+            payload: dict = jwt.decode(access_token, key=self.secret_key, algorithms=self.algorithm)
+        except jwt.ExpiredSignatureError:
+            return None
+
+        return payload.get("sub")
