@@ -83,6 +83,12 @@ class ArticleRepository:
 
         return articles
 
+    def save_article(self, article: Article) -> Article:
+        self.session.add(instance=article)
+        self.session.commit()
+        self.session.refresh(instance=article)
+        return article
+
     @staticmethod
     def save_articles(session: Session, articles: List[dict]) -> None:
         data = []
