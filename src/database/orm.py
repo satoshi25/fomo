@@ -42,7 +42,7 @@ class Article(Base):
 class User(Base):
     __tablename__ = "user"
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(Integer, nullable=False)
+    username = Column(String(50), nullable=False)
     password = Column(String(256), nullable=False)
     role = Column(Integer, nullable=False)
 
