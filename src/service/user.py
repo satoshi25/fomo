@@ -1,11 +1,15 @@
 from jose import jwt
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
 import bcrypt
+import os
+
+load_dotenv()
 
 
 class UserService:
     encode: str = "UTF-8"
-    secret_key: str = "fomo_service"
+    secret_key: str = os.getenv("JWT_SECRET_KEY")
     algorithm: str = "HS256"
 
     def hash_password(self, password: str) -> str:

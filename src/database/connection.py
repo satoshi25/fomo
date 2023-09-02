@@ -1,11 +1,14 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
+import os
 
-from src.config import MYSQL_URL
 
-DATABASE_URL = MYSQL_URL
+load_dotenv()
 
-engine = create_engine(DATABASE_URL, echo=True)
+DB_URL = os.getenv("DATABASE_URL")
+
+engine = create_engine(DB_URL, echo=False)
 SessionFactory = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 

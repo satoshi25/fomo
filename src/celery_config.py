@@ -1,7 +1,14 @@
 from celery import Celery
 from celery.schedules import crontab
+from dotenv import load_dotenv
+import os
 
-from src.config import CELERY_BROKER, CELERY_BACKEND, HOUR, MINUTE
+load_dotenv()
+
+CELERY_BROKER = os.getenv("CELERY_BROKER")
+CELERY_BACKEND = os.getenv("CELERY_BACKEND")
+HOUR = os.getenv("HOUR")
+MINUTE = os.getenv("MINUTE")
 
 celery_task = Celery(
     "tasks",

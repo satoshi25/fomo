@@ -17,10 +17,6 @@ class Article(Base):
     view = Column(Integer, nullable=False)
     publish_date = Column(Date, nullable=False)
 
-    def __repr__(self):
-        return (f"Article(id={self.id}, title={self.title}, image={self.image}, "
-                f"journal={self.journal}, url={self.url}, publish_date={self.publish_date})")
-
     def update_image(self, image: str):
         self.image = image
 
@@ -45,9 +41,6 @@ class User(Base):
     username = Column(String(50), nullable=False)
     password = Column(String(256), nullable=False)
     role = Column(Integer, nullable=False)
-
-    def __repr__(self):
-        return f"Article(id={self.id}, username={self.username}"
 
     @classmethod
     def create_user(cls, username: str, password: str, role: int) -> 'User':

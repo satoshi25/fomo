@@ -62,8 +62,6 @@ class ArticleRepository:
         stmt = select(sub_article).where(sub_article.c.rank == 1).order_by(sub_article.c.view.desc())
 
         articles: Sequence[Row] | None = self.session.execute(stmt).fetchall()
-        # articles 의 타입이 <class 'sqlalchemy.engine.row.Row'>를 담은 list 다.
-        # 요소는 tuple 형태다.
 
         if not articles:
             articles = None
