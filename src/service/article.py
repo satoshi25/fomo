@@ -12,7 +12,7 @@ load_dotenv()
 
 
 class ScrapArticle:
-    journal_list: list = os.getenv("SCRP_LIST").split(",")
+    journal_list: list = os.getenv("SCRAP_LIST").split(",")
     no_image: str = ("https://user-images.githubusercontent.com/"
                      "81741466/263754639-170bee96-6728-40c6-b60d-9d45d0db4e99.jpeg")
     days: int = int(os.getenv("DAYS"))
