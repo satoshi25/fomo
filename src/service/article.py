@@ -2,25 +2,31 @@ from requests import get
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 from typing import List
+from dotenv import load_dotenv
 import re
 import pprint
+import os
+
+
+load_dotenv()
 
 
 class ScrapArticle:
-    journal_list: list = ["028", "001", "032", "005", "053", "052", "055", "437", "056", "214"]
+    journal_list: list = os.getenv("SCRP_LIST").split(",")
     no_image: str = ("https://user-images.githubusercontent.com/"
                      "81741466/263754639-170bee96-6728-40c6-b60d-9d45d0db4e99.jpeg")
+    days: int = int(os.getenv("DAYS"))
 
     def scrap_articles(self) -> List[dict]:
         scrap_data = []
         for journal_url in self.journal_list:
-            base_url = (
+            base_url: str = (
                 f"https://media.naver.com/press/{journal_url}/ranking?type=popular&date="
             )
-            today = "".join(
-                str(datetime.date(datetime.today() - timedelta(days=0))).split("-")
+            today: str = "".join(
+                str(datetime.date(datetime.today() - timedelta(days=self.days))).split("-")
             )
-            url = f"{base_url}{today}"
+            url: str = f"{base_url}{today}"
             headers = {
                 "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
                               "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
