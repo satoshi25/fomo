@@ -3,9 +3,12 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 from typing import List
 from dotenv import load_dotenv
+
 import re
 import pprint
 import os
+import time
+import random
 
 
 load_dotenv()
@@ -32,6 +35,7 @@ class ScrapArticle:
                               "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
             }
             response = get(url, headers=headers)
+            time.sleep(random.uniform(10, 13))
             num = re.compile("\\d+")
             if response.status_code != 200:
                 print("scrapping failed")
